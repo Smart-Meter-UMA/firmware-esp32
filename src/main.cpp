@@ -3,9 +3,13 @@
 #include <ble/ble.h>
 #include <sensors/sensors.cpp>
 
+#define CONFIG_NIMBLE_CPP_DEBUG_LEVEL = 4
+
 uint32_t current_time;
 uint32_t start_time;
 uint32_t timed_event;
+
+uint32_t interval;
 
 Sensors sensors;
 
@@ -35,8 +39,11 @@ void loop() {
 		
 		sensors.fakeData();
 		setValueCharacteristic("voltage", std::to_string(sensors.voltage));
-		setValueCharacteristic("intensity", std::to_string(sensors.voltage));
-		setValueCharacteristic("power", std::to_string(sensors.voltage));
+		setValueCharacteristic("intensity", std::to_string(sensors.intensity));
+		setValueCharacteristic("power", std::to_string(sensors.power));
+		//TODO: Need to check if the value is correct:
+		interval = std::stoi(getValueCharacteristic("interval"));
+		timed_event = interval * 1000;
 		start_time = current_time;  // reset the timer
 	}
 }
