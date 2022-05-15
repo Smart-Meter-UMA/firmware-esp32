@@ -1,7 +1,5 @@
 #include "ble.h"
 
-
-
 NimBLEServer *pServer;
 NimBLEService *pService;
 NimBLECharacteristic *pVoltageCharac;
@@ -144,16 +142,12 @@ void setupBLE()
     pIntervalCharac = pService->createCharacteristic(UUID_INTERVAL, NIMBLE_PROPERTY::READ |
 			NIMBLE_PROPERTY::WRITE);
     pIntervalCharac->setCallbacks(new CharacteristicCallbacks());
+    pIntervalCharac->setValue("1");
 
     // Characteristic for Token (Only write)
     pTokenCharac = pService->createCharacteristic(UUID_TOKEN, NIMBLE_PROPERTY::WRITE);
     pTokenCharac->setCallbacks(new CharacteristicCallbacks());
 
-    pService->addCharacteristic(pIntensityCharac);
-    pService->addCharacteristic(pVoltageCharac);
-    pService->addCharacteristic(pPowerCharac);
-    pService->addCharacteristic(pIntervalCharac);
-    pService->addCharacteristic(pTokenCharac);
     pService->start();
 
     pAdvertising = NimBLEDevice::getAdvertising();
@@ -173,6 +167,11 @@ void setValueCharacteristic(std::string characteristic, std::string value){
         pIntensityCharac->setValue(value);
         return;
     }
+    if(characteristic == "power"){
+        pPowerCharac->setValue(value);
+        pPowerCharac->notify(true);
+        return;
+    }
     if(characteristic == "interval"){
         pIntervalCharac->setValue(value);
         return;
@@ -189,6 +188,9 @@ std::string getValueCharacteristic(std::string characteristic){
     }
     if(characteristic == "intensity"){
         return pIntensityCharac->getValue();
+    }
+    if(characteristic == "power"){
+        return pPowerCharac->getValue();
     }
     if(characteristic == "interval"){
         return pIntervalCharac->getValue();
