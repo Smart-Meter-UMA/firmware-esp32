@@ -2,6 +2,7 @@
 #include <NimBLEDevice.h>
 #include <ble/ble.h>
 #include <sensors/sensors.cpp>
+#include <wifi/wifi.h>
 
 #define CONFIG_NIMBLE_CPP_DEBUG_LEVEL = 4
 

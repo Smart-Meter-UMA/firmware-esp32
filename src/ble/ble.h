@@ -11,8 +11,12 @@
 #define UUID_POWER "50303030-d32a-11ec-9d64-0242ac120002"
 #define UUID_INTERVAL "4956414c-d32a-11ec-9d64-0242ac120002"
 
-// UUIDs for configuration:
+// UUIDs for configuration:1
 #define UUID_TOKEN "544f4b4e-d32a-11ec-9d64-0242ac120002"
+
+#ifdef WIFI_BLE_ENABLED
+#include "wifi/wifi.h"
+#endif
 
 #define LED 23
 #define ONBOARD_LED 2
