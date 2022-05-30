@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <NimBLEDevice.h>
 #include <ble/ble.h>
-#include <sensors/sensors.cpp>
+#include <sensors/sensors.h>
 #include <wifi/wifi.h>
 
 #define CONFIG_NIMBLE_CPP_DEBUG_LEVEL = 4
@@ -36,12 +36,20 @@ void loop() {
 
 	if (current_time - start_time >= timed_event) {
 		// the event to trigger
-		Serial.println("."); 
+
+		setValueCharacteristic("voltage", std::to_string(sensors.voltageCalculation()));
+		setValueCharacteristic("intensity", std::to_string(sensors.currentCalculation()));
+		setValueCharacteristic("power", std::to_string(sensors.powerCalculation()));
+
+		Serial.print("Voltage: ");
+		Serial.println(sensors.voltageCalculation());
+		Serial.print("Current: ");
+		Serial.println(sensors.currentCalculation());
+		Serial.print("Power: "); 
+		Serial.println(sensors.powerCalculation());
+		Serial.println();
+		Serial.println();
 		
-		sensors.fakeData();
-		setValueCharacteristic("voltage", std::to_string(sensors.voltage));
-		setValueCharacteristic("intensity", std::to_string(sensors.intensity));
-		setValueCharacteristic("power", std::to_string(sensors.power));
 		//TODO: Need to check if the value is correct:
 		interval = std::stoi(getValueCharacteristic("interval"));
 		timed_event = interval * 1000;

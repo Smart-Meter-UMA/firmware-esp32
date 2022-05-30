@@ -3,25 +3,32 @@
 #include "Arduino.h"
 #include "EmonLib.h"
 
+#define USE_FIXED_VOLTAGE 1
+#define FIXED_VOLTAGE 240
+
+#define CALIBRATION_IRMS 1484
+#define CALIBRATION_CURRENT 1.8
+#define PIN_34 34
+#define PIN_36 36
+
 class Sensors{
     private:
 
     public:
-        float intensity;
-        float voltage;
-        float power;
+        double current;
+        double voltage;
+        double power;
 
         //Measure interval:
         float interval;
 
         Sensors(/* args */);
-        ~Sensors();
 
         void fakeData();
 
-        double Current_Calculation();
-        double Voltage_Calculation();
-        double Power_Calculation();
+        double currentCalculation();
+        double voltageCalculation();
+        double powerCalculation();
     };
 
 #endif
