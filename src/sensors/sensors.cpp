@@ -1,37 +1,40 @@
 #include "sensors.h"
 
-namespace k_project{
-    double Sensors::Current_Calculation(){
-        EnergyMonitor Monitor;
+#define CALIBRATION_IRMS 1484
+#define CALIBRATION_CURRENT 1.8
+#define PIN_34 34
+#define PIN_36 36
 
-        Monitor.current(34, 1.8); //ESP's PIN and calibration's valor (this valor is teoric)
-    
-        double current = Monitor.calcIrms(1484);
+double Current_Calculation(){
+    EnergyMonitor Monitor;
 
-        return current;
-    }
+    Monitor.current(PIN_34, CALIBRATION_CURRENT); //ESP's PIN and calibration's valor (this valor is teoric)
 
-    double Sensors::Voltage_Calculation(){
-        EnergyMonitor Monitor;
+    double current = Monitor.calcIrms(CALIBRATION_IRMS);
 
-        Monitor.voltage(36, 0, 0); //HABRÁ QUE CAMBIARLO, ES ORIENTATIVO
+    return current;
+}
 
-        double voltage = Monitor.readVcc(); //HABRÁ QUE CAMBIARLO, ES ORIENTATIVO
+double Voltage_Calculation(){
+    EnergyMonitor Monitor;
 
-        return voltage;
-    }
+    Monitor.voltage(PIN_36, 0, 0); //HABRÁ QUE CAMBIARLO, ES ORIENTATIVO
 
-    double Sensors::Power_Calculation(){
-        double power = Current_Calculation() * Voltage_Calculation();
+    double voltage = Monitor.readVcc(); //HABRÁ QUE CAMBIARLO, ES ORIENTATIVO
 
-        return power;
-    }
+    return voltage;
+}
+
+double Power_Calculation(){
+    double power = Current_Calculation() * Voltage_Calculation();
+
+    return power;
+}
 
 
 
-    void Sensors::fakeData(){
-        intensity = random(1,100)/random(1,10);
-        voltage = random(1,100)/random(1,10);
-        power = intensity * voltage;
-    }
+void Sensors::fakeData(){
+    intensity = random(1,100)/random(1,10);
+    voltage = random(1,100)/random(1,10);
+    power = intensity * voltage;
 }

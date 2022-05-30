@@ -3,27 +3,25 @@
 #include "Arduino.h"
 #include "EmonLib.h"
 
-namespace k_project{
-    class Sensors{
-        private:
+class Sensors{
+    private:
 
-        public:
-            float intensity;
-            float voltage;
-            float power;
+    public:
+        float intensity;
+        float voltage;
+        float power;
 
-            //Measure interval:
-            float interval;
+        //Measure interval:
+        float interval;
 
-            Sensors(/* args */);
-            ~Sensors();
+        Sensors(/* args */);
+        ~Sensors();
 
-            void fakeData();
+        void fakeData();
 
-            double Current_Calculation();
-            double Voltage_Calculation();
-            double Power_Calculation();
-        };
-}
+        double Current_Calculation();
+        double Voltage_Calculation();
+        double Power_Calculation();
+    };
 
 #endif
