@@ -22,6 +22,8 @@ class Sensors{
         //Measure interval:
         float interval;
 
+        EnergyMonitor Monitor;
+
         Sensors(/* args */);
 
         void fakeData();

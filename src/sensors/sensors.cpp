@@ -1,15 +1,12 @@
 #include "sensors.h"
 
 Sensors::Sensors(){
-
+    Monitor.current(PIN_34, CALIBRATION_CURRENT); //ESP's PIN and calibration's valor (this valor is teoric)
+    //Monitor.voltage(PIN_36, 0, 0); //HABRÁ QUE CAMBIARLO, ES ORIENTATIVO
 }
 
 double Sensors::currentCalculation(){
-    EnergyMonitor Monitor;
-
-    Monitor.current(PIN_34, CALIBRATION_CURRENT); //ESP's PIN and calibration's valor (this valor is teoric)
-
-    current = Monitor.calcIrms(CALIBRATION_IRMS);
+    current = abs(Monitor.calcIrms(CALIBRATION_IRMS) - 0.13);
 
     return current;
 }
@@ -20,10 +17,6 @@ double Sensors::voltageCalculation(){
     #endif
 
     #ifndef USE_FIXED_VOLTAGE
-    EnergyMonitor Monitor;
-
-    Monitor.voltage(PIN_36, 0, 0); //HABRÁ QUE CAMBIARLO, ES ORIENTATIVO
-
     voltage = Monitor.readVcc(); //HABRÁ QUE CAMBIARLO, ES ORIENTATIVO
 
     #endif
@@ -36,9 +29,6 @@ double Sensors::powerCalculation(){
 
     return power;
 }
-
-
-
 
 void Sensors::fakeData(){
     current = random(1,100)/random(1,10);

@@ -14,9 +14,10 @@ uint32_t interval;
 
 Sensors sensors;
 
+EnergyMonitor Monitor;
+
 void changeValueOfRegisters(){
   float randomNumber = random(1,100)/random(1,10);
-
 }
 
 void setup() {
@@ -28,6 +29,8 @@ void setup() {
   current_time = millis();
   start_time = current_time;
 
+  Monitor.current(PIN_34, CALIBRATION_CURRENT); //ESP's PIN and calibration's valor (this valor is teoric)
+
   sensors = Sensors();
 }
 
@@ -38,9 +41,10 @@ void loop() {
 		// the event to trigger
 
 		setValueCharacteristic("voltage", std::to_string(sensors.voltageCalculation()));
-		setValueCharacteristic("intensity", std::to_string(sensors.currentCalculation()));
+		setValueCharacteristic("current", std::to_string(sensors.currentCalculation()));
 		setValueCharacteristic("power", std::to_string(sensors.powerCalculation()));
 
+		Serial.println("FUNCIONES: ");
 		Serial.print("Voltage: ");
 		Serial.println(sensors.voltageCalculation());
 		Serial.print("Current: ");
