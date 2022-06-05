@@ -170,6 +170,12 @@ void setupBLE()
     pAdvertising->start();
 }
 
+void disableBLE(){
+    NimBLEDevice::deinit(true);
+    esp_bt_controller_disable();
+    esp_bt_controller_deinit();
+}
+
 void setValueCharacteristic(std::string characteristic, std::string value){
     if(characteristic == "voltage"){
         pVoltageCharac->setValue(value);
