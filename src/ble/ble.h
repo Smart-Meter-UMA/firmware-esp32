@@ -52,6 +52,7 @@ class DescriptorCallbacks : public NimBLEDescriptorCallbacks {
 };
 
 void setupBLE();
+void disableBLE();
 
 void setValueCharacteristic(std::string characteristic, std::string value);
 std::string getValueCharacteristic(std::string characteristic);
