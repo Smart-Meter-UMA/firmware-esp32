@@ -146,7 +146,7 @@ void setupBLE()
 
     // Characteristic for Token (Only write)
     pTokenCharac = pService->createCharacteristic(UUID_TOKEN, NIMBLE_PROPERTY::WRITE);
-    pTokenCharac->setCallbacks(new CharacteristicWifiCallbacks());
+    pTokenCharac->setCallbacks(new CharacteristicCallbacks());
 
     // Temporal Characteristics for Wifi (WIP to make it safe):
     #ifdef WIFI_BLE_ENABLED
