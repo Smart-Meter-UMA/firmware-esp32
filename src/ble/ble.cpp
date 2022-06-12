@@ -120,6 +120,7 @@ void DescriptorCallbacks::onRead(NimBLEDescriptor *pDescriptor)
 void setupBLE()
 {
     NimBLEDevice::init("SmartMeter");
+    NimBLEDevice::setMTU(527);
     NimBLEDevice::setPower(ESP_PWR_LVL_P9);
 
     pServer = NimBLEDevice::createServer();
@@ -145,9 +146,9 @@ void setupBLE()
     pIntervalCharac->setValue("1");
 
     // Characteristic for Token (Only write)
-    pTokenCharac = pService->createCharacteristic(UUID_TOKEN, NIMBLE_PROPERTY::WRITE);
+    pTokenCharac = pService->createCharacteristic(UUID_TOKEN, NIMBLE_PROPERTY::WRITE, 512);
     pTokenCharac->setCallbacks(new CharacteristicCallbacks());
-
+ 
     // Temporal Characteristics for Wifi (WIP to make it safe):
     #ifdef WIFI_BLE_ENABLED
         pSSIDCharac = pService->createCharacteristic(UUID_SSID, NIMBLE_PROPERTY::WRITE);
