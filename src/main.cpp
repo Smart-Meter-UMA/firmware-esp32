@@ -82,7 +82,6 @@ void setup() {
 
 void loop() {
 	//printWakeUpReason(); //Print the wakeup reason for ESP32
-	//Serial.println();
 
   	current_time = millis(); // update the timer every cycle
 
