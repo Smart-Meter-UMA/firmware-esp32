@@ -69,6 +69,7 @@ void setup() {
 	start_time = current_time;
 
   	Monitor.current(PIN_34, CALIBRATION_CURRENT); //ESP's PIN and calibration's valor (this valor is teoric)
+	Monitor.voltage(PIN_35, CALIBRATION_VOLTAGE, CALIBRATION_PHASE);
 
   	sensors = Sensors();
 
@@ -87,7 +88,7 @@ void loop() {
 
 	if(current_time - start_time >= timed_event){
 		// the event to trigger
-		setValueCharacteristic("voltage", std::to_string(sensors.voltageCalculation()));
+		/*setValueCharacteristic("voltage", std::to_string(sensors.voltageCalculation()));
 		setValueCharacteristic("current", std::to_string(sensors.currentCalculation()));
 		setValueCharacteristic("power", std::to_string(sensors.powerCalculation()));
 
@@ -104,7 +105,10 @@ void loop() {
 		//TODO: Need to check if the value is correct:
 		interval = std::stoi(getValueCharacteristic("interval"));
 		timed_event = interval * 1000;
-		start_time = current_time;  // reset the timer
+		start_time = current_time;  // reset the timer*/
+
+		Monitor.calcVI(20, 2000);
+		Monitor.serialprint();
 	}
 
 	//esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S); //ESP32 wakes up every 5 seconds

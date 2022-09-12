@@ -12,14 +12,17 @@ double Sensors::currentCalculation(){
 }
 
 double Sensors::voltageCalculation(){
-    #ifdef USE_FIXED_VOLTAGE
+    /*#ifdef USE_FIXED_VOLTAGE
     voltage = FIXED_VOLTAGE;
     #endif
 
     #ifndef USE_FIXED_VOLTAGE
     voltage = Monitor.readVcc(); //HABRÁ QUE CAMBIARLO, ES ORIENTATIVO
 
-    #endif
+    #endif*/
+
+    //voltage = abs(Monitor.calcVrms(CALIBRATION_VRMS));
+    voltage = analogRead(34) *(3.3 / 4096);
 
     return voltage;
 }
