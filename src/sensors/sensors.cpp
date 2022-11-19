@@ -1,8 +1,8 @@
 #include "sensors.h"
 
 Sensors::Sensors(){
-    Monitor.current(PIN_34, CALIBRATION_CURRENT); //ESP's PIN and calibration's valor (this valor is teoric)
-    //Monitor.voltage(PIN_36, 0, 0); //HABRÁ QUE CAMBIARLO, ES ORIENTATIVO
+    Monitor.current(PIN_CORRIENTE, CALIBRATION_CURRENT); //ESP's PIN and calibration's valor (this valor is teoric)
+    //Monitor.voltage(PIN_VOLTAJE, 0, 0); //HABRÁ QUE CAMBIARLO, ES ORIENTATIVO
 }
 
 double Sensors::currentCalculation(){
@@ -12,17 +12,17 @@ double Sensors::currentCalculation(){
 }
 
 double Sensors::voltageCalculation(){
-    /*#ifdef USE_FIXED_VOLTAGE
+    #ifdef USE_FIXED_VOLTAGE
     voltage = FIXED_VOLTAGE;
     #endif
 
     #ifndef USE_FIXED_VOLTAGE
     voltage = Monitor.readVcc(); //HABRÁ QUE CAMBIARLO, ES ORIENTATIVO
 
-    #endif*/
+    #endif
 
     //voltage = abs(Monitor.calcVrms(CALIBRATION_VRMS));
-    voltage = analogRead(34) *(3.3 / 4096);
+    //voltage = analogRead(34) *(3.3 / 4096);
 
     return voltage;
 }
