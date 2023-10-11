@@ -19,12 +19,10 @@
 uint32_t current_time;
 uint32_t start_time;
 uint32_t timed_event;
-
 uint32_t interval;
 
 Sensors sensors;
 
-EnergyMonitor Monitor;
 
 void changeValueOfRegisters(){
   float randomNumber = random(1, 100) / random(1, 10);
@@ -69,8 +67,8 @@ void setup() {
 	current_time = millis();
 	start_time = current_time;
 
-  	Monitor.current(PIN_CORRIENTE, CALIBRATION_CURRENT); //ESP's PIN and calibration's valor (this valor is teoric)
-	Monitor.voltage(PIN_VOLTAJE, CALIBRATION_VOLTAGE, CALIBRATION_PHASE);
+  	//Monitor.current(PIN_CORRIENTE, CALIBRATION_CURRENT); //ESP's PIN and calibration's valor (this valor is teoric)
+	//Monitor.voltage(PIN_VOLTAJE, CALIBRATION_VOLTAGE, CALIBRATION_PHASE);
 
   	sensors = Sensors();
 

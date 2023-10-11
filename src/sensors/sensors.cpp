@@ -1,8 +1,15 @@
 #include "sensors.h"
 
+EnergyMonitor Monitor;
+
+
 Sensors::Sensors(){
     Monitor.current(PIN_CORRIENTE, CALIBRATION_CURRENT); //ESP's PIN and calibration's valor (this valor is teoric)
-    //Monitor.voltage(PIN_VOLTAJE, 0, 0); //HABRÁ QUE CAMBIARLO, ES ORIENTATIVO
+    Monitor.voltage(PIN_VOLTAJE, CALIBRATION_VOLTAGE, CALIBRATION_PHASE); //HABRÁ QUE CAMBIARLO, ES ORIENTATIVO
+
+    current = 0.0;
+    voltage = 0.0;
+    power = 0.0;
 }
 
 double Sensors::currentCalculation(){
