@@ -13,7 +13,7 @@ Sensors::Sensors(){
 }
 
 double Sensors::currentCalculation(){
-    current = abs(Monitor.calcIrms(CALIBRATION_IRMS) - 0.04);
+    current = abs(Monitor.calcIrms(CALIBRATION_IRMS) - 0.6);
 
     return current;
 }
