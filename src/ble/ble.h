@@ -15,7 +15,7 @@
 #define UUID_TOKEN "544f4b4e-d32a-11ec-9d64-0242ac120002"
 
 #ifdef WIFI_BLE_ENABLED
-#include "wifi/wifi.h"
+#include "wifi/wifimanager.h"
 #endif
 
 #define LED 23
