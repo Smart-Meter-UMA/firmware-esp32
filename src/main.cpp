@@ -2,7 +2,7 @@
 #include <NimBLEDevice.h>
 #include <ble/ble.h>
 #include <sensors/sensors.h>
-#include <wifi/wifi.h>
+#include <wifi/wifimanager.h>
 
 #define CONFIG_NIMBLE_CPP_DEBUG_LEVEL 4
 #define ESP32 1
