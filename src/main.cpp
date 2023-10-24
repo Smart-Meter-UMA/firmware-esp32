@@ -133,8 +133,8 @@ void setup() {
 	current_time = millis();
 	start_time = current_time;
 
-  	Monitor.current(PIN_CORRIENTE, CALIBRATION_CURRENT); //ESP's PIN and calibration's valor (this valor is teoric)
-	Monitor.voltage(PIN_VOLTAJE, CALIBRATION_VOLTAGE, CALIBRATION_PHASE);
+  	//Monitor.current(PIN_CORRIENTE, CALIBRATION_CURRENT); //ESP's PIN and calibration's valor (this valor is teoric)
+	//onitor.voltage(PIN_VOLTAJE, CALIBRATION_VOLTAGE, CALIBRATION_PHASE);
 
   	sensors = Sensors();
 
