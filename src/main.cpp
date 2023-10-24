@@ -26,6 +26,8 @@ Sensors sensors;
 
 EnergyMonitor Monitor;
 
+WifiManager wifiManager;
+
 void changeValueOfRegisters(){
   float randomNumber = random(1, 100) / random(1, 10);
 }
@@ -73,6 +75,10 @@ void setup() {
 	Monitor.voltage(PIN_VOLTAJE, CALIBRATION_VOLTAGE, CALIBRATION_PHASE);
 
   	sensors = Sensors();
+
+	wifiManager = WifiManager();
+
+	CharacteristicWifiCallbacks* callbacks = new CharacteristicWifiCallbacks(&wifiManager);
 
 	//DEEP-SLEEP
   	/*printWakeUpReason();

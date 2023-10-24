@@ -14,21 +14,28 @@ extern NimBLECharacteristic *pStatusWifiCharac;
 
 // This characteristics are use for the WIFI callbacks and are linked with the WiFi Module.
 class CharacteristicWifiCallbacks: public NimBLECharacteristicCallbacks {
-    void onRead(NimBLECharacteristic* pCharacteristic);
-    void onWrite(NimBLECharacteristic* pCharacteristic);
+    private:
+        WifiManager* wifiManager;  // pointer to WifiManager instance
+    public:
+        CharacteristicWifiCallbacks(WifiManager* wifiManagerInstance);
+        void onRead(NimBLECharacteristic* pCharacteristic);
+        void onWrite(NimBLECharacteristic* pCharacteristic);
 };
 
 class WifiManager {
     private:
     String _ssid;
     String _password;
+    bool _pass_isSet;
+    bool _ssid_isSet;
 
     public:
+    WifiManager();
     void setSSID(const char *ssid);
     void setPassword(const char *password);
     bool connectToNetwork();
 
-    void getWifiInfo();
+    String getWifiInfo();
 };
 
 #endif

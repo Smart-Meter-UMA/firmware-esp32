@@ -26,66 +26,85 @@ void CharacteristicWifiCallbacks::onWrite(NimBLECharacteristic *pCharacteristic)
         Serial.print(": onRead(), value: ");
         Serial.println(ssidExtracted);
 
-        Serial.print("SSID extracted: ");
-        Serial.println(ssidExtracted);      
+        wifiManager->setSSID(ssidExtracted.c_str());  
     }
 
     if (pCharacteristic->getUUID().toString() == UUID_PASSWORD)
     {
         // It's the Password:
-        String ssidExtracted = String(pCharacteristic->getValue().c_str());
+        String passExtracted = String(pCharacteristic->getValue().c_str());
         Serial.print(pCharacteristic->getUUID().toString().c_str());
         Serial.print(": onRead(), value: ");
         Serial.println(pCharacteristic->getValue().c_str());
-
-        Serial.print("SSID extracted: ");
-        Serial.println(pCharacteristic->getValue().c_str());      
+        
+        wifiManager->setSSID(passExtracted.c_str());       
     }
     
 }
 
-WifiManager::WifiManager() : _ssid(nullptr), _password(nullptr) {
-    // Initialization if needed
+WifiManager::WifiManager() : _ssid(""), _password(""), _ssid_isSet(false), _pass_isSet(false) {
+    // Other initialization as necessary
 }
 
 void WifiManager::setSSID(const char* ssid) {
+    Serial.println(String("SSID entered ") + String(ssid));
     _ssid = ssid;
+    _ssid_isSet = true;
+        if(!_pass_isSet){
+        Serial.println(String("Expecting password."));
+    }
 }
 
 void WifiManager::setPassword(const char* password) {
+    Serial.println(String("Password entered ") + String(password));
+    _pass_isSet = true;
     _password = password;
+    if(!_ssid_isSet){
+        Serial.println(String("Expecting ssid."));
+    } else {
+        connectToNetwork();
+    }
 }
 
 bool WifiManager::connectToNetwork() {
-    if (!_ssid || !_password) {
+    int tries = 0;
+    if ((!_ssid_isSet && _ssid.length() > 0) || (!_pass_isSet  && _password.length() > 0)) {
         // Handle the case where SSID or password is not set
         return false;
     }
 
-    WiFi.begin(_ssid, _password);
+    WiFi.begin(_ssid.c_str(), _password.c_str());
 
     // Wait for connection
     while (WiFi.status() != WL_CONNECTED) {
         delay(500); // Wait 500ms
+        Serial.println("Waiting connection...");
+        tries++;
+        if(tries > 5){
+            return false;
+        }
         // Here you could add some timeout logic to prevent infinite loops
     }
 
-    configureHttpsClient(); // Configure HTTPS client after successful connection
+    Serial.println("WIFI CONNECTED!");
+    getWifiInfo();
+
+    // configureHttpsClient(); // Configure HTTPS client after successful connection
     return true; // Connected successfully
 }
 
-WiFiClientSecure WifiManager::getHttpsClient() {
-    return _httpsClient;
-}
+// WiFiClientSecure WifiManager::getHttpsClient() {
+//     return _httpsClient;
+// }
 
 String WifiManager::getWifiInfo() {
     String info = "SSID: " + String(WiFi.SSID()) + "\n";
-    info += "Wifi Encryption Type: " + String(WiFi.encryptionType()) + String("on channel") + String(WiFi.channel()))
+    info += "Wifi Encryption Type: " + String(WiFi.encryptionType()) + String("on channel") + String(WiFi.channel());
     info += "IP Address: " + WiFi.localIP().toString() + "\n";
     info += "Signal strength (RSSI): " + String(WiFi.RSSI()) + " dBm\n";
     return info;
 }
 
-void WifiManager::configureHttpsClient() {
+// void WifiManager::configureHttpsClient() {
 
-}
+// }
