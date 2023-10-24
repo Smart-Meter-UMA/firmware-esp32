@@ -31,6 +31,7 @@ extern NimBLECharacteristic *pIntervalCharac;
 extern NimBLECharacteristic *pPowerCharac;
 extern NimBLECharacteristic *pTokenCharac;
 extern NimBLEAdvertising *pAdvertising;
+extern char JWTToken[150];
 
 class ServerCallbacks: public NimBLEServerCallbacks{
     void onConnect(NimBLEServer* pServer);

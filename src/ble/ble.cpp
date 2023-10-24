@@ -208,6 +208,13 @@ void setValueCharacteristic(std::string characteristic, std::string value){
     }
     if(characteristic == "token"){
         pTokenCharac->setValue(value);
+        // Ensure the string is not too long for the buffer
+        if (value.length() < sizeof(JWTToken)) {
+            // Copy the string content to your char array, token
+            strlcpy(JWTToken, value.c_str(), sizeof(JWTToken));
+        } else {
+            Serial.println("String too long for the buffer of JWTToken");
+        }
         return;
     }
 
