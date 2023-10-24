@@ -9,6 +9,12 @@ NimBLECharacteristic *pPowerCharac;
 NimBLECharacteristic *pTokenCharac;
 NimBLEAdvertising *pAdvertising;
 
+#ifdef WIFI_BLE_ENABLED
+NimBLECharacteristic *pSSIDCharac;
+NimBLECharacteristic *pPasswordCharac;
+NimBLECharacteristic *pStatusWifiCharac;
+#endif
+
 void ServerCallbacks::onConnect(NimBLEServer *pServer)
 {
     Serial.println("Client connected");
@@ -117,7 +123,20 @@ void DescriptorCallbacks::onRead(NimBLEDescriptor *pDescriptor)
     Serial.println(" Descriptor read");
 };
 
-void setupBLE()
+void configureWifiCallbacks(CharacteristicWifiCallbacks *wifiCallbacks){
+    #ifdef WIFI_BLE_ENABLED
+        pSSIDCharac = pService->createCharacteristic(UUID_SSID, NIMBLE_PROPERTY::WRITE);
+        pSSIDCharac->setCallbacks(wifiCallbacks);
+
+        pPasswordCharac = pService->createCharacteristic(UUID_PASSWORD, NIMBLE_PROPERTY::WRITE);
+        pPasswordCharac->setCallbacks(wifiCallbacks);
+
+        pStatusWifiCharac = pService->createCharacteristic(UUID_STATUSWIFI, NIMBLE_PROPERTY::READ);
+        pStatusWifiCharac->setCallbacks(wifiCallbacks);
+    #endif
+}
+
+void setupBLE(CharacteristicWifiCallbacks *wifiCallbacks)
 {
     NimBLEDevice::init("SmartMeter");
     NimBLEDevice::setMTU(527);
@@ -149,17 +168,9 @@ void setupBLE()
     pTokenCharac = pService->createCharacteristic(UUID_TOKEN, NIMBLE_PROPERTY::WRITE, 512);
     pTokenCharac->setCallbacks(new CharacteristicCallbacks());
  
-    // // Temporal Characteristics for Wifi (WIP to make it safe):
-    // #ifdef WIFI_BLE_ENABLED
-    //     pSSIDCharac = pService->createCharacteristic(UUID_SSID, NIMBLE_PROPERTY::WRITE);
-    //     pSSIDCharac->setCallbacks(new CharacteristicWifiCallbacks());
-
-    //     pPasswordCharac = pService->createCharacteristic(UUID_PASSWORD, NIMBLE_PROPERTY::WRITE);
-    //     pPasswordCharac->setCallbacks(new CharacteristicWifiCallbacks());
-
-    //     pStatusWifiCharac = pService->createCharacteristic(UUID_STATUSWIFI, NIMBLE_PROPERTY::READ);
-    //     pSSIDCharac->setCallbacks(new CharacteristicWifiCallbacks());
-    // #endif
+    #ifdef WIFI_BLE_ENABLED
+        configureWifiCallbacks(wifiCallbacks);
+    #endif
 
     pService->start();
 
@@ -169,19 +180,6 @@ void setupBLE()
     pAdvertising->setAppearance(0x0557);
     pAdvertising->setScanResponse(true);
     pAdvertising->start();
-}
-
-void configureWifiCallbacks(CharacteristicWifiCallbacks wifiManager){
-    #ifdef WIFI_BLE_ENABLED
-        pSSIDCharac = pService->createCharacteristic(UUID_SSID, NIMBLE_PROPERTY::WRITE);
-        pSSIDCharac->setCallbacks(&wifiManager);
-
-        pPasswordCharac = pService->createCharacteristic(UUID_PASSWORD, NIMBLE_PROPERTY::WRITE);
-        pPasswordCharac->setCallbacks(&wifiManager);
-
-        pStatusWifiCharac = pService->createCharacteristic(UUID_STATUSWIFI, NIMBLE_PROPERTY::READ);
-        pSSIDCharac->setCallbacks(&wifiManager);
-    #endif
 }
 
 void disableBLE(){

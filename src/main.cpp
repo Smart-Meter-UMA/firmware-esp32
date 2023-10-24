@@ -28,6 +28,8 @@ EnergyMonitor Monitor;
 
 WifiManager wifiManager;
 
+CharacteristicWifiCallbacks *wifiCallbacks;
+
 void changeValueOfRegisters(){
   float randomNumber = random(1, 100) / random(1, 10);
 }
@@ -65,7 +67,11 @@ void printWakeUpReason(){
 void setup() {
 	Serial.begin(9600);
 
-	setupBLE();
+	wifiManager = WifiManager();
+
+	wifiCallbacks = new CharacteristicWifiCallbacks(&wifiManager);
+
+	setupBLE(wifiCallbacks);
 
 	timed_event = 1000; // after 1000 ms trigger the event
 	current_time = millis();
@@ -76,9 +82,10 @@ void setup() {
 
   	sensors = Sensors();
 
-	wifiManager = WifiManager();
 
-	CharacteristicWifiCallbacks* callbacks = new CharacteristicWifiCallbacks(&wifiManager);
+
+	//configureWifiCallbacks(callbacks);
+
 
 	//DEEP-SLEEP
   	/*printWakeUpReason();

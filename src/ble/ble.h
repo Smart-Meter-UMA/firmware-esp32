@@ -2,6 +2,7 @@
 #define BLE_H
 #include <NimBLEDevice.h>
 #include <Arduino.h>
+#include "wifi/wifimanager.h"
 
 #define UUID_SERVICE "534d4d54-d32a-11ec-9d64-0242ac120002"
 
@@ -51,8 +52,10 @@ class DescriptorCallbacks : public NimBLEDescriptorCallbacks {
     void onRead(NimBLEDescriptor* pDescriptor);
 };
 
-void setupBLE();
+void setupBLE(CharacteristicWifiCallbacks *wifiCallbacks);
 void disableBLE();
+
+void configureWifiCallbacks(CharacteristicWifiCallbacks *wificallbacks);
 
 void setValueCharacteristic(std::string characteristic, std::string value);
 std::string getValueCharacteristic(std::string characteristic);
