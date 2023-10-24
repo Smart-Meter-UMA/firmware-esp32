@@ -133,9 +133,6 @@ void setup() {
 	current_time = millis();
 	start_time = current_time;
 
-	transmission_timed_event = 10000;
-	transmission_start_time = current_time;
-
   	Monitor.current(PIN_CORRIENTE, CALIBRATION_CURRENT); //ESP's PIN and calibration's valor (this valor is teoric)
 	Monitor.voltage(PIN_VOLTAJE, CALIBRATION_VOLTAGE, CALIBRATION_PHASE);
 
