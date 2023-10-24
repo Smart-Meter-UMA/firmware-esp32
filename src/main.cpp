@@ -36,8 +36,6 @@ uint32_t interval;
 
 Sensors sensors;
 
-EnergyMonitor Monitor;
-
 WifiManager wifiManager;
 
 CharacteristicWifiCallbacks *wifiCallbacks;
