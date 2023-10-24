@@ -116,7 +116,7 @@ bool WifiManager::connectToNetwork() {
         tries++;
         Serial.println(WiFi.status());
         if(tries > 20){
-            return false;
+            
             Serial.println("Error connecting to Wifi");
                         // Detailed error reason.
             switch (WiFi.status()) {
