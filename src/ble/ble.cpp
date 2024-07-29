@@ -71,11 +71,9 @@ void CharacteristicCallbacks::onNotify(NimBLECharacteristic *pCharacteristic)
 /** The status returned in status is defined in NimBLECharacteristic.h.
  *  The value returned in code is the NimBLE host return code.
  */
-void CharacteristicCallbacks::onStatus(NimBLECharacteristic *pCharacteristic, Status status, int code)
+void CharacteristicCallbacks::onStatus(NimBLECharacteristic *pCharacteristic, int code)
 {
     String str = ("Notification/Indication status code: ");
-    str += status;
-    str += ", return code: ";
     str += code;
     str += ", ";
     str += NimBLEUtils::returnCodeToString(code);
