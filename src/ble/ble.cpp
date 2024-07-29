@@ -134,7 +134,12 @@ void configureWifiCallbacks(CharacteristicWifiCallbacks *wifiCallbacks){
     #endif
 }
 
-void setupBLE(CharacteristicWifiCallbacks *wifiCallbacks)
+void configureOtaCallbacks(CharacteristicOtaCallbacks *otaCallbacks){
+    pUpdateUrlCharac = pService->createCharacteristic(UUID_UPDATEURL, NIMBLE_PROPERTY::WRITE);
+    pUpdateUrlCharac->setCallbacks(otaCallbacks);
+}
+
+void setupBLE(CharacteristicWifiCallbacks *wifiCallbacks, CharacteristicOtaCallbacks *otaCallbacks)
 {
     NimBLEDevice::init("SmartMeter");
     NimBLEDevice::setMTU(527);
@@ -169,6 +174,8 @@ void setupBLE(CharacteristicWifiCallbacks *wifiCallbacks)
     #ifdef WIFI_BLE_ENABLED
         configureWifiCallbacks(wifiCallbacks);
     #endif
+
+    configureOtaCallbacks(otaCallbacks);
 
     pService->start();
 

@@ -19,6 +19,8 @@
 #include "wifi/wifimanager.h"
 #endif
 
+#include "utils/ota_updater.h"
+
 #define LED 23
 #define ONBOARD_LED 2
 #define USE_SERIAL_BLE 1
@@ -32,6 +34,9 @@ extern NimBLECharacteristic *pPowerCharac;
 extern NimBLECharacteristic *pTokenCharac;
 extern NimBLEAdvertising *pAdvertising;
 extern char JWTToken[150];
+
+// Ota updater BLE
+extern NimBLECharacteristic *pUpdateUrlCharac;
 
 class ServerCallbacks: public NimBLEServerCallbacks{
     void onConnect(NimBLEServer* pServer);
@@ -48,15 +53,20 @@ class CharacteristicCallbacks: public NimBLECharacteristicCallbacks {
     void onSubscribe(NimBLECharacteristic* pCharacteristic, ble_gap_conn_desc* desc, uint16_t subValue);
 };
 
+class CharacteristicOtaCallbacks: public NimBLECharacteristicCallbacks {
+    void onWrite(NimBLECharacteristic* pCharacteristic);
+};
+
 class DescriptorCallbacks : public NimBLEDescriptorCallbacks {
     void onWrite(NimBLEDescriptor* pDescriptor);
     void onRead(NimBLEDescriptor* pDescriptor);
 };
 
-void setupBLE(CharacteristicWifiCallbacks *wifiCallbacks);
+void setupBLE(CharacteristicWifiCallbacks *wifiCallbacks, CharacteristicOtaCallbacks *otaCallbacks);
 void disableBLE();
 
 void configureWifiCallbacks(CharacteristicWifiCallbacks *wificallbacks);
+extern void configureOtaCallbacks(CharacteristicOtaCallbacks *otaCallbacks);
 
 void setValueCharacteristic(std::string characteristic, std::string value);
 std::string getValueCharacteristic(std::string characteristic);
