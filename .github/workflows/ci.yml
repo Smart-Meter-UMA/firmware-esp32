@@ -1,0 +1,110 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        platformio-version: [5.x, 6.x]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python, Install PlatformIO and esptool.py
+      run: |
+        python -m pip install --upgrade pip
+        pip install platformio==${{ matrix.platformio-version }}
+        pip install esptool
+
+    - name: Install dependencies
+      run: platformio update
+
+    - name: Build project
+      run: platformio run
+
+    - name: Run unit tests
+      run: platformio test
+
+    - name: Generate filesystem binary
+      run: platformio run -t buildfs
+
+  combine:
+    needs: build  # Este job se ejecuta después del job de build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'  # Este job solo se ejecuta manualmente
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python, Install PlatformIO and esptool.py
+      run: |
+        python -m pip install --upgrade pip
+        pip install platformio
+        pip install esptool
+
+    - name: Build project
+      run: platformio run
+
+    - name: Generate filesystem binary
+      run: platformio run -t buildfs
+
+    - name: Combine binaries
+      run: |
+        platformio run -t elf2bin
+        esptool.py --chip esp32 merge_bin -o combined.bin --flash_mode dio --flash_freq 40m --flash_size detect \
+          0x1000 .pio/build/esp32dev/bootloader.bin \
+          0x8000 .pio/build/esp32dev/partitions.bin \
+          0x10000 .pio/build/esp32dev/firmware.bin \
+          0x291000 .pio/build/esp32dev/spiffs.bin
+
+    - name: Upload artifact combined.bin
+      uses: actions/upload-artifact@v2
+      with:
+        name: combined-firmware
+        path: combined.bin
+
+    - name: Upload artifact firmware.bin
+      uses: actions/upload-artifact@v2
+      with:
+        name: combined-firmware
+        path: combined.bin
+    
+    - name: Upload artifact spiffs.bin
+      uses: actions/upload-artifact@v2
+      with:
+        name: combined-firmware
+        path: combined.bin
+    
+    - name: Upload to x0.at - Combined
+      env:
+        X0AT_UPLOAD_URL: https://x0.at
+      run: |
+        UPLOAD_RESPONSE=$(curl -F "file=@combined.bin" $X0AT_UPLOAD_URL)
+        echo "File uploaded to: $UPLOAD_RESPONSE"
+        echo "UPLOAD_URL_COMBINED=$UPLOAD_RESPONSE" >> $GITHUB_ENV
+    
+    - name: Upload to x0.at - Firmware
+      env:
+        X0AT_UPLOAD_URL: https://x0.at
+      run: |
+        UPLOAD_RESPONSE=$(curl -F "file=@./.pio/build/esp32dev/firmware.bin" $X0AT_UPLOAD_URL)
+        echo "File uploaded to: $UPLOAD_RESPONSE"
+        echo "UPLOAD_URL_FIRMWARE=$UPLOAD_RESPONSE" >> $GITHUB_ENV
+    
+    - name: Upload to x0.at - Spiffs
+      env:
+        X0AT_UPLOAD_URL: https://x0.at
+      run: |
+        UPLOAD_RESPONSE=$(curl -F "file=@./.pio/build/esp32dev/spiffs.bin" $X0AT_UPLOAD_URL)
+        echo "File uploaded to: $UPLOAD_RESPONSE"
+        echo "UPLOAD_URL_SPIFFS=$UPLOAD_RESPONSE" >> $GITHUB_ENV
