@@ -6,6 +6,7 @@
 #include "time.h"
 #include "WiFiClientSecure.h"
 #include "smartmeterserver/smartmeterserver.h"
+#include "utils/ota_updater.h"
 
 #define CONFIG_NIMBLE_CPP_DEBUG_LEVEL 4
 #define ESP32 1
