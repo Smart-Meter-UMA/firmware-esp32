@@ -8,6 +8,8 @@
 #include "smartmeterserver/smartmeterserver.h"
 #include "utils/ota_updater.h"
 
+#define SERVER_URL "smart-meter-backend.ertis.uma.es"
+
 #define CONFIG_NIMBLE_CPP_DEBUG_LEVEL 4
 #define ESP32 1
 
@@ -24,7 +26,7 @@
 #define MAX_STRING_DOUBLE 10
 
 
-const char* server = "smart-meter-backend.ertis.uma.es";
+const char* server = SERVER_URL;
 
 uint32_t current_time;
 uint32_t start_time;
@@ -139,7 +141,7 @@ void setup() {
 
 	attachedToServer = false;
 
-	SmartMeterServer smartMeterServer("smart-meter-backend.ertis.uma.es", "");
+	SmartMeterServer smartMeterServer(SERVER_URL, "");
 
 	//DEEP-SLEEP
   	/*printWakeUpReason();
