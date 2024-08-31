@@ -135,7 +135,7 @@ void configureWifiCallbacks(CharacteristicWifiCallbacks *wifiCallbacks){
 }
 
 void configureOTACallbacks(CharacteristicOTACallbacks *otaCallbacks){
-    pUpdateUrlCharac = pService->createCharacteristic(UUID_UPDATEURL, NIMBLE_PROPERTY::WRITE);
+    NimBLECharacteristic *pUpdateUrlCharac = pService->createCharacteristic(UUID_UPDATEURL, NIMBLE_PROPERTY::WRITE);
     pUpdateUrlCharac->setCallbacks(otaCallbacks);
 }
 
