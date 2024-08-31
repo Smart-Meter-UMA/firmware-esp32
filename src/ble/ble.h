@@ -14,6 +14,7 @@
 
 // UUIDs for configuration:1
 #define UUID_TOKEN "544f4b4e-d32a-11ec-9d64-0242ac120002"
+#define UUID_UPDATEURL "4f544155-d32a-11ec-9d64-0242ac120002"
 
 #ifdef WIFI_BLE_ENABLED
 #include "wifi/wifimanager.h"
@@ -53,20 +54,16 @@ class CharacteristicCallbacks: public NimBLECharacteristicCallbacks {
     void onSubscribe(NimBLECharacteristic* pCharacteristic, ble_gap_conn_desc* desc, uint16_t subValue);
 };
 
-class CharacteristicOtaCallbacks: public NimBLECharacteristicCallbacks {
-    void onWrite(NimBLECharacteristic* pCharacteristic);
-};
-
 class DescriptorCallbacks : public NimBLEDescriptorCallbacks {
     void onWrite(NimBLEDescriptor* pDescriptor);
     void onRead(NimBLEDescriptor* pDescriptor);
 };
 
-void setupBLE(CharacteristicWifiCallbacks *wifiCallbacks, CharacteristicOtaCallbacks *otaCallbacks);
+void setupBLE(CharacteristicWifiCallbacks *wifiCallbacks, CharacteristicOTACallbacks *otaCallbacks);
 void disableBLE();
 
 void configureWifiCallbacks(CharacteristicWifiCallbacks *wificallbacks);
-extern void configureOtaCallbacks(CharacteristicOtaCallbacks *otaCallbacks);
+extern void configureOTACallbacks(CharacteristicOTACallbacks *otaCallbacks);
 
 void setValueCharacteristic(std::string characteristic, std::string value);
 std::string getValueCharacteristic(std::string characteristic);

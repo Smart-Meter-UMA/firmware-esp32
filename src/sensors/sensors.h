@@ -11,8 +11,8 @@
 #define CALIBRATION_VRMS 2000
 #define CALIBRATION_VOLTAGE 175
 #define CALIBRATION_PHASE 1.7
-#define PIN_CORRIENTE 34
-#define PIN_VOLTAJE 35
+#define PIN_CURRENT 34
+#define PIN_VOLTAGE 35
 
 class Sensors{
     private:

@@ -3,6 +3,27 @@
 #include <HTTPClient.h>
 #include <Update.h>
 
+
+
+CharacteristicOTACallbacks::CharacteristicOTACallbacks(OTAUpdater* OTAUpdaterInstance) {
+    otaUpdater = OTAUpdaterInstance;
+}
+
+// If it's writing, it must be the smartphone is sending information about the ssid or password:
+void CharacteristicOTACallbacks::onWrite(NimBLECharacteristic *pCharacteristic)
+{ 
+    if (pCharacteristic->getUUID().toString() == UUID_UPDATEURL)
+    {
+        // It's the UpdatedURL:
+        String urlExtracted = String(pCharacteristic->getValue().c_str());
+        Serial.print(pCharacteristic->getUUID().toString().c_str());
+        Serial.print(": onRead(), value: ");
+        Serial.println(urlExtracted);
+
+        otaUpdater->setFirmwareUrl(urlExtracted.c_str());  
+    }
+}
+
 OTAUpdater::OTAUpdater() {
     firmwareUrl = "";
     fileSystemUrl = "";

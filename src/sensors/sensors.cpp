@@ -4,8 +4,8 @@ EnergyMonitor Monitor;
 
 
 Sensors::Sensors(){
-    Monitor.current(PIN_CORRIENTE, CALIBRATION_CURRENT); //ESP's PIN and calibration's valor (this valor is teoric)
-    Monitor.voltage(PIN_VOLTAJE, CALIBRATION_VOLTAGE, CALIBRATION_PHASE); //HABRÁ QUE CAMBIARLO, ES ORIENTATIVO
+    Monitor.current(PIN_CURRENT, CALIBRATION_CURRENT); //ESP's PIN and calibration's valor (this valor is teoric)
+    Monitor.voltage(PIN_VOLTAGE, CALIBRATION_VOLTAGE, CALIBRATION_PHASE); //HABRÁ QUE CAMBIARLO, ES ORIENTATIVO
 
     current = 0.0;
     voltage = 0.0;

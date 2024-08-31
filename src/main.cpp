@@ -40,8 +40,10 @@ uint32_t interval;
 Sensors sensors;
 
 WifiManager wifiManager;
+OTAUpdater otaUpdater;
 
 CharacteristicWifiCallbacks *wifiCallbacks;
+CharacteristicOTACallbacks *otaCallbacks;
 
 bool attachedToServer;
 
@@ -127,8 +129,9 @@ void setup() {
 	wifiManager = WifiManager();
 
 	wifiCallbacks = new CharacteristicWifiCallbacks(&wifiManager);
+	otaCallbacks = new CharacteristicOTACallbacks(&otaUpdater);
 
-	setupBLE(wifiCallbacks);
+	setupBLE(wifiCallbacks, otaCallbacks);
 
 	timed_event = 1000; // after 1000 ms trigger the event
 	current_time = millis();
